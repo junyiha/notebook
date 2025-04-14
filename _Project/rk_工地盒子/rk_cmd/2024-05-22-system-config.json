@@ -1,0 +1,9 @@
+{
+    "enableNotifyEvent":false,
+    "autoDeleteEventThreshold":3999,
+    "enableGddRecycleData":false,
+    "reportEventDrawImageWithROI":false,
+    "enableAutoDelete":false,
+    "modifyFlag":false,
+    "eventSubscribers":null
+}

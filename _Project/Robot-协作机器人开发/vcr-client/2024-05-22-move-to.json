@@ -1,0 +1,12 @@
+{
+    "space": "joint",
+    "speedPercent": 8,
+    "target": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+    ]
+}
