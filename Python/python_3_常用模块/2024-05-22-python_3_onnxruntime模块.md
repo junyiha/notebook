@@ -98,3 +98,80 @@ print("模型输出:", output)
 ```
 
 在这个示例中，我们首先加载了一个ONNX模型，并准备了输入数据。然后，我们使用`sess.run()`函数执行推理，将输入数据传递给模型，并获取模型的输出结果。最后，我们打印了输出结果。
+
+## onnxruntime get_inputs() 函数 详解
+
+`onnxruntime` 是一个高性能的 ONNX 模型推理库，常用于在 Python 中加载和运行 `.onnx` 格式的模型。`get_inputs()` 是 `InferenceSession` 类的一个方法，用于获取模型的输入信息。下面是对这个函数的详细解释。
+
+---
+
+## 一、基本用法
+
+```python
+import onnxruntime as ort
+
+session = ort.InferenceSession("model.onnx")
+inputs = session.get_inputs()
+```
+
+`get_inputs()` 返回的是一个包含模型输入信息的列表，每个元素是一个 `onnxruntime.NodeArg` 对象，表示一个输入节点。
+
+---
+
+## 二、NodeArg 对象属性详解
+
+每个输入对象（`NodeArg`）有如下常用属性：
+
+| 属性      | 说明                                      |
+| ------- | --------------------------------------- |
+| `name`  | 输入张量的名称，调用 `run()` 推理时必须使用这个名称          |
+| `type`  | 数据类型，比如 `tensor(float)`、`tensor(int64)` |
+| `shape` | 输入张量的形状（维度），维度可能是整数或字符串（表示动态维度）         |
+
+### 示例
+
+```python
+for i, input in enumerate(inputs):
+    print(f"Input {i}:")
+    print("  name:", input.name)
+    print("  type:", input.type)
+    print("  shape:", input.shape)
+```
+
+输出示例：
+
+```
+Input 0:
+  name: input_1
+  type: tensor(float)
+  shape: ['batch_size', 3, 224, 224]
+```
+
+说明该模型输入是一个 4 维张量，数据类型是 float，形状是 `[batch_size, 3, 224, 224]`，其中 `batch_size` 是动态维度。
+
+---
+
+## 三、配合推理使用
+
+你需要使用这些输入信息来构造推理输入字典：
+
+```python
+import numpy as np
+
+input_name = session.get_inputs()[0].name
+input_shape = session.get_inputs()[0].shape
+input_data = np.random.randn(1, 3, 224, 224).astype(np.float32)
+
+output = session.run(None, {input_name: input_data})
+```
+
+---
+
+## 四、其他相关函数
+
+* `session.get_outputs()`：获取输出节点的信息，格式与 `get_inputs()` 类似。
+* `session.get_modelmeta()`：获取模型元数据（如生产者名、版本等）。
+
+---
+
+如果你有具体的 ONNX 模型文件或需要解析多输入模型的结构，我也可以帮你做进一步分析。你可以上传模型或提供输入信息。
