@@ -11,6 +11,11 @@ tag: LLM
 
 <!--more-->
 
+# note
+
++ username: test
++ email: 1604244855@qq.com
++ password: 53xts137
 
 # 引用
 
